@@ -6,6 +6,7 @@ app = FastAPI()
 @app.get("/get-student-info")
 async def getStudentInfo(id: int):
     data = databaseInfo.getStudent(id);
+
     if data is None:
         raise HTTPException(status_code=404, detail=f"Student with ID '{id}' not found.")
 
@@ -13,3 +14,10 @@ async def getStudentInfo(id: int):
 
 @app.get("/get-students")
 async def getStudents():
+    data = databaseInfo.getAllStudents()
+
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"Students not found.")
+
+    return data
+

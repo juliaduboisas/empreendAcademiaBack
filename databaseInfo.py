@@ -16,3 +16,18 @@ def getStudent(id: int):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+
+def getAllStudents():
+    try:
+        df = pd.read_csv("base_academia_3m_completa.csv")
+        allStudents = df.to_dict('records')
+
+        return allStudents
+
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="Data file not found on the server.")
+    except pd.errors.EmptyDataError:
+        return []
+    except Exception as e:
+        print(f"An unexpected error occurred during CSV reading: {e}")
+        raise HTTPException(status_code=500, detail="Error processing data file.")
