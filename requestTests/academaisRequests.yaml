@@ -1,0 +1,189 @@
+type: collection.insomnia.rest/5.0
+name: AcadeMais
+meta:
+  id: wrk_97d9c2d247004ec7ad0b929c7a4fe62d
+  created: 1763857761960
+  modified: 1763857803620
+collection:
+  - url: http://localhost:8000/get-gym-name
+    name: gym-name
+    meta:
+      id: req_df65ddd1efe340cf8d2b6d83b05c680d
+      created: 1763857762035
+      modified: 1763857894078
+      isPrivate: false
+      sortKey: -1763857864489
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/get-student-info
+    name: student-by-id
+    meta:
+      id: req_ede6c3009fec4ba78f9f12c6fd671b91
+      created: 1763857823495
+      modified: 1763857956021
+      isPrivate: false
+      sortKey: -1763857823495
+    method: GET
+    parameters:
+      - id: pair_2746ae0aeb1243fdb77b3b642a107ae8
+        name: id
+        value: "1"
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/get-students
+    name: students-all
+    meta:
+      id: req_c9790bcc55fe4348b8c4e10676042003
+      created: 1763857864389
+      modified: 1763857961608
+      isPrivate: false
+      sortKey: -1763857864389
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/get-students-by-unit
+    name: students-by-unit
+    meta:
+      id: req_ac790d6370124e58a1e26beb78dd707f
+      created: 1763857914649
+      modified: 1763857948919
+      isPrivate: false
+      sortKey: -1763857843942
+    method: GET
+    parameters:
+      - id: pair_94c16e738c8449faa66ab1221ec44455
+        name: unit
+        value: centro
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/get-students-predictions
+    name: get-predictions-all
+    meta:
+      id: req_056ae5d312c8402b89d8d8866c32de00
+      created: 1763863892445
+      modified: 1763864967500
+      isPrivate: false
+      sortKey: -1763857823395
+    method: GET
+    parameters:
+      - id: pair_5b3b2e84382644908bf1839638b5d67f
+        name: modelName
+        value: Regressão_Logística
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/get-student-prediction
+    name: get-predictions-student
+    meta:
+      id: req_0bc3e912d7e54810af8026acef43a248
+      created: 1763864979081
+      modified: 1763865204216
+      isPrivate: false
+      sortKey: -1757459948073
+    method: GET
+    parameters:
+      - id: pair_a631f433d58d468dac275778a12cf221
+        name: id
+        value: "5"
+        disabled: false
+      - id: pair_5b3b2e84382644908bf1839638b5d67f
+        name: modelName
+        value: Regressão_Logística
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/get-student-evasion-percentage
+    name: get-evasion-predictions-percentage
+    meta:
+      id: req_a91973c2628c466da6de74eb98bbd5dc
+      created: 1763866514926
+      modified: 1763866532344
+      isPrivate: false
+      sortKey: -1754261010412
+    method: GET
+    parameters:
+      - id: pair_5b3b2e84382644908bf1839638b5d67f
+        name: modelName
+        value: Regressão_Logística
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_af49a83e8df64385124a59bb62fb3072b0cd360c
+    created: 1763857761964
+    modified: 1763857761964
+environments:
+  name: Base Environment
+  meta:
+    id: env_af49a83e8df64385124a59bb62fb3072b0cd360c
+    created: 1763857761962
+    modified: 1763857761962
+    isPrivate: false
