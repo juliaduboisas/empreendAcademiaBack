@@ -21,3 +21,11 @@ async def getStudents():
 
     return data
 
+@app.get("/get-students-by-unit")
+async def getStudentsByUnit(unit: str):
+    data = databaseInfo.getStudentsByUnit(unit)
+
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"Students not found.")
+
+    return data

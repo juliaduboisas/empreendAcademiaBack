@@ -1,4 +1,6 @@
 import pandas as pd
+from fastapi import HTTPException
+
 
 def getStudent(id: int):
     try:
@@ -23,6 +25,21 @@ def getAllStudents():
         allStudents = df.to_dict('records')
 
         return allStudents
+
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="Data file not found on the server.")
+    except pd.errors.EmptyDataError:
+        return []
+    except Exception as e:
+        print(f"An unexpected error occurred during CSV reading: {e}")
+        raise HTTPException(status_code=500, detail="Error processing data file.")
+
+def getStudentsByUnit(unit: str):
+    try:
+        df = pd.read_csv("database.csv")
+        studentsInUnit = df.loc[df["unidade"] == unit]
+
+        return studentsInUnit.to_dict('records')
 
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
