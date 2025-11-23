@@ -12,7 +12,7 @@ def getStudent(id: int):
             return None;
 
     except FileNotFoundError:
-        print(f"Error: File '{filename}' not found.")
+        print(f"Error: File 'database.csv' not found.")
         return None
     except Exception as e:
         print(f"An error occurred: {e}")
