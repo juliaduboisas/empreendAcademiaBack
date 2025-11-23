@@ -97,7 +97,10 @@ async def upload_csv(file: UploadFile = File(...)):
 
     try:
         await databaseInfo.saveFile(file)
-        return "File successfully uploaded"
+
+        await runPipeline()
+
+        return JSONResponse(status_code=200, content={"message": "File uploaded and AI processed successfully"})
     except Exception as e:
         # Catch errors during reading/processing
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
