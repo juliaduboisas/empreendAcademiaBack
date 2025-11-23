@@ -1,7 +1,6 @@
 import pandas as pd
 from fastapi import HTTPException
 
-
 def getStudent(id: int):
     try:
         df = pd.read_csv("database.csv")
