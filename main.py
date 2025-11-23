@@ -3,6 +3,10 @@ import databaseInfo
 
 app = FastAPI()
 
+@app.get("/get-gym-name")
+async def getGymName():
+    return "AcadeMais"
+
 @app.get("/get-student-info")
 async def getStudentInfo(id: int):
     data = databaseInfo.getStudent(id);
