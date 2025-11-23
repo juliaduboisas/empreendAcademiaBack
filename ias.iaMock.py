@@ -21,7 +21,7 @@ def runMockAIPipeline():
     df = pd.read_csv("base_academia_3m_completa.csv")
 
     # Retira colunas não utilizadas no treino
-    df_model = df.drop(columns=["Nome", "aluno_id"])
+    df_model = df.drop(columns=["Nome", "aluno_id", "unidade"])
 
     # Converte Status para binário
     df_model["Status"] = df_model["Status"].map({"Cancelou": 1, "Ativo": 0})
