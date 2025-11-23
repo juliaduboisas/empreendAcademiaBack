@@ -12,7 +12,7 @@ def getStudent(id: int):
             return None;
 
     except FileNotFoundError:
-        print(f"Error: File '{filename}' not found.")
+        print(f"Error: Database file not found.")
         return None
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -54,7 +54,7 @@ async def saveFile(file: File()):
 
     try:
         with open(filePath, 'wb') as f:
-            f.write(content)
+            f.write(contents)
 
     except Exception as e:
         print(f"An error occurred: {e}")

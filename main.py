@@ -71,11 +71,7 @@ async def getStudentEvasionPercentagePerUnit(unit: str):
 @app.post("/run-pipeline")
 async def runPipeline():
     data = iaInfo.runAIPipeline()
-
-    if data is None:
-        raise HTTPException(status_code=404, detail=f"Pipeline not found.")
-
-    return data
+    return JSONResponse(status_code=200, content={"message": "Pipeline executed successfully"})
 
 @app.post("/upload-csv")
 async def upload_csv(file: UploadFile = File(...)):
@@ -87,7 +83,6 @@ async def upload_csv(file: UploadFile = File(...)):
 
     try:
         await databaseInfo.saveFile(file)
-
         return "File successfully uploaded"
     except Exception as e:
         # Catch errors during reading/processing
