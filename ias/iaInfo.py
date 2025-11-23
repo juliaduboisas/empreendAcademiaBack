@@ -19,9 +19,9 @@ def getDfIndividualResultsFiltered(modelName: str):
                                        right_on="aluno_id",
                                        how="inner")
 
-        columnName = modelName.replace("_", " ")
+        columnName = modelName.replace("_", " ") + "_Prediction"
 
-        columnsToKeep = ["aluno_id", "Nome", "Objetivo", "unidade", columnName + "_Prediction"]
+        columnsToKeep = ["aluno_id", "Nome", "Objetivo", "unidade", columnName]
         columnsToDrop = dfIndividualResults.columns.difference(columnsToKeep)
 
         dfIndividualResultsFiltered = dfIndividualResults.drop(columns=columnsToDrop, axis=1)
@@ -71,4 +71,23 @@ def getStudentPrediction(id: int, modelName: str):
         print(f"An unexpected error occurred during CSV reading: {e}")
         raise HTTPException(status_code=500, detail="Error processing data file.")
 
+def getStudentEvasionPredictionPercentage(modelName: str):
+    try:
+        df = pd.read_csv("predictions/" + modelName + "_predictions.csv")
 
+        predictionColumn = modelName.replace("_", " ") + "_Prediction"
+        positiveCount = df[predictionColumn].sum()
+
+        totalPredictions = df.shape[0]
+
+        positivePercentage = float(positiveCount) / float(totalPredictions)
+
+        return positivePercentage
+
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="Data file not found on the server.")
+    except pd.errors.EmptyDataError:
+        return []
+    except Exception as e:
+        print(f"An unexpected error occurred during CSV reading: {e}")
+        raise HTTPException(status_code=500, detail="Error processing data file.")

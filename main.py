@@ -58,3 +58,11 @@ async def getStudentPrediction(id: int, modelName: str):
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
+
+@app.get("/get-student-evasion-percentage")
+async def getStudentPrediction(modelName: str):
+    data = iaInfo.getStudentEvasionPredictionPercentage(modelName)
+
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"Students not found.")
+    return data
