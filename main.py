@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 import databaseInfo
-import ias.iaInfo
 from ias import iaInfo
 
 app = FastAPI()
@@ -46,7 +45,15 @@ async def runPipeline():
 
 @app.get("/get-students-predictions")
 async def getStudentsPredictions(modelName: str):
-    data = iaInfo.mockAI.getIndividualResults(modelName)
+    data = iaInfo.getIndividualResults(modelName)
+
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"Students not found.")
+    return data
+
+@app.get("/get-student-prediction")
+async def getStudentPrediction(id: int, modelName: str):
+    data = iaInfo.getStudentPrediction(id, modelName)
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
