@@ -1,12 +1,11 @@
-from ias.modelResults import modelResults
 from fastapi import HTTPException
 
-import ias.iaPipeline as pipe
+from . import iaJupyterPipeline
 import pandas as pd
 
-def runPipeline():
-    results = pipe.runAIPipeline()
-    return results
+def runAIPipeline():
+    iaJupyterPipeline.runJupyterPipeline()
+    return "Pipeline executed successfully"
 
 def getDfIndividualResultsFiltered():
     try:

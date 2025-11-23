@@ -35,12 +35,13 @@ async def getStudentsByUnit(unit: str):
 
     return data
 
-@app.get("/run-pipeline")
+@app.post("/run-pipeline")
 async def runPipeline():
-    data = iaInfo.runPipeline()
+    data = iaInfo.runAIPipeline()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Pipeline not found.")
+
     return data
 
 @app.get("/get-students-predictions")
