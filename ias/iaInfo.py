@@ -8,20 +8,18 @@ def runPipeline():
     results = pipe.runAIPipeline()
     return results
 
-def getDfIndividualResultsFiltered(modelName: str):
+def getDfIndividualResultsFiltered():
     try:
-        dfPredictions = pd.read_csv("predictions/" + modelName + "_predictions.csv")
+        dfPredictions = pd.read_csv("predictions/predicoes_alunos_academia.csv")
         dfStudents = pd.read_csv("database.csv")
 
         dfIndividualResults = pd.merge(dfPredictions,
                                        dfStudents,
-                                       left_on="Original_Synthetic_Row_ID",
+                                       left_on="aluno_id",
                                        right_on="aluno_id",
                                        how="inner")
 
-        columnName = modelName.replace("_", " ") + "_Prediction"
-
-        columnsToKeep = ["aluno_id", "Nome", "Objetivo", "unidade", columnName]
+        columnsToKeep = ["aluno_id", "Nome", "Objetivo", "unidade", "predicao"]
         columnsToDrop = dfIndividualResults.columns.difference(columnsToKeep)
 
         dfIndividualResultsFiltered = dfIndividualResults.drop(columns=columnsToDrop, axis=1)
@@ -37,9 +35,9 @@ def getDfIndividualResultsFiltered(modelName: str):
         raise HTTPException(status_code=500, detail="Error processing data file.")
 
 
-def getIndividualResults(modelName: str):
+def getIndividualResults():
     try:
-        dfIndividualResultsFiltered = getDfIndividualResultsFiltered(modelName)
+        dfIndividualResultsFiltered = getDfIndividualResultsFiltered()
 
         results = dfIndividualResultsFiltered.to_dict('records')
 
@@ -53,9 +51,9 @@ def getIndividualResults(modelName: str):
         print(f"An unexpected error occurred during CSV reading: {e}")
         raise HTTPException(status_code=500, detail="Error processing data file.")
 
-def getStudentPrediction(id: int, modelName: str):
+def getStudentPrediction(id: int):
     try:
-        df = getDfIndividualResultsFiltered(modelName)
+        df = getDfIndividualResultsFiltered()
         result = df.loc[df["aluno_id"] == id]
 
         if not result.empty:
@@ -71,16 +69,37 @@ def getStudentPrediction(id: int, modelName: str):
         print(f"An unexpected error occurred during CSV reading: {e}")
         raise HTTPException(status_code=500, detail="Error processing data file.")
 
-def getStudentEvasionPredictionPercentage(modelName: str):
+def getStudentEvasionPredictionPercentage():
     try:
-        df = pd.read_csv("predictions/" + modelName + "_predictions.csv")
+        df = pd.read_csv("predictions/predicoes_alunos_academia.csv")
 
-        predictionColumn = modelName.replace("_", " ") + "_Prediction"
-        positiveCount = df[predictionColumn].sum()
+        positiveCount = df["predicao"].sum()
 
         totalPredictions = df.shape[0]
 
-        positivePercentage = float(positiveCount) / float(totalPredictions)
+        positivePercentage = (float(positiveCount) / float(totalPredictions)) * float(100)
+
+        return positivePercentage
+
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="Data file not found on the server.")
+    except pd.errors.EmptyDataError:
+        return []
+    except Exception as e:
+        print(f"An unexpected error occurred during CSV reading: {e}")
+        raise HTTPException(status_code=500, detail="Error processing data file.")
+
+def getPredictionPercentagePerUnit(unit: str):
+    try:
+        df = getDfIndividualResultsFiltered()
+
+        dfFiltered = df.loc[df["unidade"] == unit]
+
+        positiveCount = dfFiltered["predicao"].sum()
+
+        totalPredictions = dfFiltered.shape[0]
+
+        positivePercentage = (float(positiveCount) / float(totalPredictions)) * float(100)
 
         return positivePercentage
 

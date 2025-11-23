@@ -44,24 +44,32 @@ async def runPipeline():
     return data
 
 @app.get("/get-students-predictions")
-async def getStudentsPredictions(modelName: str):
-    data = iaInfo.getIndividualResults(modelName)
+async def getStudentsPredictions():
+    data = iaInfo.getIndividualResults()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
 
 @app.get("/get-student-prediction")
-async def getStudentPrediction(id: int, modelName: str):
-    data = iaInfo.getStudentPrediction(id, modelName)
+async def getStudentPrediction(id: int):
+    data = iaInfo.getStudentPrediction(id)
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
 
 @app.get("/get-student-evasion-percentage")
-async def getStudentPrediction(modelName: str):
-    data = iaInfo.getStudentEvasionPredictionPercentage(modelName)
+async def getStudentPrediction():
+    data = iaInfo.getStudentEvasionPredictionPercentage()
+
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"Students not found.")
+    return data
+
+@app.get("/get-student-evasion-percentage-per-unit")
+async def getStudentEvasionPercentagePerUnit(unit: str):
+    data = iaInfo.getPredictionPercentagePerUnit(unit)
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
