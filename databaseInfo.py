@@ -1,5 +1,5 @@
 import pandas as pd
-from fastapi import HTTPException
+from fastapi import HTTPException, File
 
 def getStudent(id: int):
     try:
@@ -47,3 +47,16 @@ def getStudentsByUnit(unit: str):
     except Exception as e:
         print(f"An unexpected error occurred during CSV reading: {e}")
         raise HTTPException(status_code=500, detail="Error processing data file.")
+
+async def saveFile(file: File()):
+    filePath = "database.csv"
+    contents = await file.read()
+
+    try:
+        with open(filePath, 'wb') as f:
+            f.write(content)
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    return

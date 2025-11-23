@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import databaseInfo
 from ias import iaInfo
@@ -49,34 +50,59 @@ async def getStudentsByUnit(unit: str):
 
     return data
 
-@app.get("/run-pipeline")
-async def runPipeline():
-    data = iaInfo.runPipeline()
-
-    if data is None:
-        raise HTTPException(status_code=404, detail=f"Pipeline not found.")
-    return data
-
 @app.get("/get-students-predictions")
-async def getStudentsPredictions(modelName: str):
-    data = iaInfo.getIndividualResults(modelName)
+async def getStudentsPredictions():
+    data = iaInfo.getIndividualResults()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
 
 @app.get("/get-student-prediction")
-async def getStudentPrediction(id: int, modelName: str):
-    data = iaInfo.getStudentPrediction(id, modelName)
+async def getStudentPrediction(id: int):
+    data = iaInfo.getStudentPrediction(id)
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
 
 @app.get("/get-student-evasion-percentage")
-async def getStudentPrediction(modelName: str):
-    data = iaInfo.getStudentEvasionPredictionPercentage(modelName)
+async def getStudentPrediction():
+    data = iaInfo.getStudentEvasionPredictionPercentage()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
+
+@app.get("/get-student-evasion-percentage-per-unit")
+async def getStudentEvasionPercentagePerUnit(unit: str):
+    data = iaInfo.getPredictionPercentagePerUnit(unit)
+
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"Students not found.")
+    return data
+
+@app.post("/run-pipeline")
+async def runPipeline():
+    data = iaInfo.runAIPipeline()
+
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"Pipeline not found.")
+
+    return data
+
+@app.post("/upload-csv")
+async def upload_csv(file: UploadFile = File(...)):
+    if not file.filename.endswith(".csv"):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid file type. Please upload a CSV file."
+        )
+
+    try:
+        await databaseInfo.saveFile(file)
+
+        return "File successfully uploaded"
+    except Exception as e:
+        # Catch errors during reading/processing
+        raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
