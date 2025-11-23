@@ -2,7 +2,7 @@ import pandas as pd
 
 def getStudent(id: int):
     try:
-        df = pd.read_csv("base_academia_3m_completa.csv")
+        df = pd.read_csv("database.csv")
         result = df.loc[df["aluno_id"] == id]
 
         if not result.empty:
@@ -19,7 +19,7 @@ def getStudent(id: int):
 
 def getAllStudents():
     try:
-        df = pd.read_csv("base_academia_3m_completa.csv")
+        df = pd.read_csv("database.csv")
         allStudents = df.to_dict('records')
 
         return allStudents

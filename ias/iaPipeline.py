@@ -11,14 +11,14 @@ from sklearn.exceptions import ConvergenceWarning
 from ctgan import CTGAN
 from google.colab import files
 
-def runMockAIPipeline():
+def runAIPipeline():
     newModel: modelResults
     results = []
 
     warnings.filterwarnings("ignore", category=ConvergenceWarning)
     uploaded = files.upload()
 
-    df = pd.read_csv("base_academia_3m_completa.csv")
+    df = pd.read_csv("../database.csv")
 
     # Retira colunas não utilizadas no treino
     df_model = df.drop(columns=["Nome", "aluno_id", "unidade"])
