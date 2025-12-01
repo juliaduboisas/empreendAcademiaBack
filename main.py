@@ -52,7 +52,7 @@ async def getNumberOfStudents():
 
     return data
 
-@app.get("/get-statistics/objetive-mode")
+@app.get("/get-statistics/objective-mode")
 async def getMostCommonObjective():
     data = databaseInfo.getObjetiveMode()
 
@@ -62,8 +62,8 @@ async def getMostCommonObjective():
     return data
 
 @app.get("/get-statistics/number-of-students-per-unit")
-async def getNumberOfStudentsPerUnit(unit: str):
-    data = databaseInfo.getTotalOfStudentsPerUnit(unit)
+async def getNumberOfStudentsPerUnit():
+    data = databaseInfo.getTotalOfStudentsPerUnit()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
@@ -71,52 +71,52 @@ async def getNumberOfStudentsPerUnit(unit: str):
     return data
 
 
-@app.get("/get-statistics/median-age")
-async def getMedianAge():
-    data = databaseInfo.getStudentsMedianAge()
+@app.get("/get-statistics/average-age")
+async def getAverageAge():
+    data = databaseInfo.getStudentsAverageAge()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
 
-@app.get("/get-statistics/median-time-as-student")
-async def getMedianTimeAsStudent():
-    data = databaseInfo.getMedianTimeAsStudent()
+@app.get("/get-statistics/average-time-as-student")
+async def getAverageTimeAsStudent():
+    data = databaseInfo.getAverageTimeAsStudent()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
 
-@app.get("/get-statistics/median-checkins")
-async def getMedianCheckins(week: int):
+@app.get("/get-statistics/average-checkins")
+async def getAverageCheckins(week: int):
     if week == 0 or week > 12:
-        data = databaseInfo.getMedianAmountOfCheckIns()
+        data = databaseInfo.getAverageAmountOfCheckIns()
     else:
-        data = databaseInfo.getMedianAmountOfCheckInsPerWeek(week)
+        data = databaseInfo.getAverageAmountOfCheckInsPerWeek(week)
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
 
-@app.get("/get-statistics/mean-weight-variation")
-async def getMeanWeightVariation():
-    data = databaseInfo.meanWeightVariation()
+@app.get("/get-statistics/average-weight-variation")
+async def getAverageWeightVariation():
+    data = databaseInfo.getAverageStudentWeightVariation()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
 
-@app.get("/get-statistics/mean-fat-variation")
-async def getMeanFatVariation():
-    data = databaseInfo.meanFatVariation()
+@app.get("/get-statistics/average-body-fat-variation")
+async def getAverageFatVariation():
+    data = databaseInfo.getAverageStudentFatVariation()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")
     return data
 
-@app.get("/get-statistics/mean-load-variation")
-async def getMeanLoadVariation():
-    data = databaseInfo.meanLoadVariation()
+@app.get("/get-statistics/average-load-variation")
+async def getAverageLoadVariation():
+    data = databaseInfo.getAverageStudentLoadVariation()
 
     if data is None:
         raise HTTPException(status_code=404, detail=f"Students not found.")

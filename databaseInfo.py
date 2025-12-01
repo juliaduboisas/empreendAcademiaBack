@@ -84,9 +84,11 @@ def getTotalOfStudents():
 def getObjetiveMode():
     try:
         df = pd.read_csv("database.csv")
-        mode = df["Objetivo"].mode()
+        modeSeries = df["Objetivo"].mode()
 
-        return mode
+        if not modeSeries.empty:
+            return modeSeries.iloc[0].capitalize()
+        return None
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
     except pd.errors.EmptyDataError:
@@ -97,29 +99,28 @@ def getObjetiveMode():
 
     return
 
-def getTotalOfStudentsPerUnit(unit: str):
+def getTotalOfStudentsPerUnit():
     try:
         df = pd.read_csv("database.csv")
-        studentsInUnit = df.loc[df["unidade"] == unit]
-        totalStudents = studentsInUnit.shape[0]
+        studentsInUnit = df["unidade"].value_counts()
 
-        return totalStudents
+        return studentsInUnit.to_dict()
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
     except pd.errors.EmptyDataError:
-        return []
+        return 0
     except Exception as e:
         print(f"An unexpected error occurred during CSV reading: {e}")
         raise HTTPException(status_code=500, detail="Error processing data file.")
 
     return
 
-def getStudentsMedianAge():
+def getStudentsAverageAge():
     try:
         df = pd.read_csv("database.csv")
-        medianAge = df["Idade"].median()
+        averageAge = df["Idade"].mean()
 
-        return medianAge
+        return averageAge
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
     except pd.errors.EmptyDataError:
@@ -129,12 +130,12 @@ def getStudentsMedianAge():
         raise HTTPException(status_code=500, detail="Error processing data file.")
     return
 
-def getMedianTimeAsStudent():
+def getAverageTimeAsStudent():
     try:
         df = pd.read_csv("database.csv")
-        medianTimeAsStudent = df["TempoComoAluno"].median()
+        averageTimeAsStudent = df["TempoComoAluno"].mean()
 
-        return medianTimeAsStudent
+        return averageTimeAsStudent
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
     except pd.errors.EmptyDataError:
@@ -144,16 +145,16 @@ def getMedianTimeAsStudent():
         raise HTTPException(status_code=500, detail="Error processing data file.")
     return
 
-def getMedianAmountOfCheckInsPerWeek(week: int):
+def getAverageAmountOfCheckInsPerWeek(week: int):
     try:
         df = pd.read_csv("database.csv")
         column_name = f"CheckinsSemana_{week}"
         checkInSum = df[column_name].sum()
         totalStudents = getTotalOfStudents()
 
-        medianCheckins = float(checkInSum) / float(totalStudents)
+        averageCheckins = float(checkInSum) / float(totalStudents)
 
-        return medianCheckins
+        return averageCheckins
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
     except pd.errors.EmptyDataError:
@@ -163,14 +164,14 @@ def getMedianAmountOfCheckInsPerWeek(week: int):
         raise HTTPException(status_code=500, detail="Error processing data file.")
     return
 
-def getMedianAmountOfCheckIns():
+def getAverageAmountOfCheckIns():
     try:
         df = pd.read_csv("database.csv")
-        medianCheckins = float(0)
+        averageCheckins = float(0)
         for i in range(1, 13):
-            medianCheckins += getMedianAmountOfCheckInsPerWeek(i)
+            averageCheckins += getAverageAmountOfCheckInsPerWeek(i)
 
-        return medianCheckins/float(12)
+        return averageCheckins/float(12)
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
     except pd.errors.EmptyDataError:
@@ -180,15 +181,15 @@ def getMedianAmountOfCheckIns():
         raise HTTPException(status_code=500, detail="Error processing data file.")
     return
 
-def meanWeightVariation():
+def getAverageStudentWeightVariation():
     try:
         df = pd.read_csv("database.csv")
         weightVariationSum = df["VariacaoPeso_2m"].sum()
         totalStudents = getTotalOfStudents()
 
-        meanWeightVariation = float(weightVariationSum) / float(totalStudents)
+        averageWeightVariation = float(weightVariationSum) / float(totalStudents)
 
-        return meanWeightVariation
+        return averageWeightVariation
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
     except pd.errors.EmptyDataError:
@@ -198,15 +199,15 @@ def meanWeightVariation():
         raise HTTPException(status_code=500, detail="Error processing data file.")
     return
 
-def meanFatVariation():
+def getAverageStudentFatVariation():
     try:
         df = pd.read_csv("database.csv")
         fatVariationSum = df["VariacaoGordura_2m"].sum()
         totalStudents = getTotalOfStudents()
 
-        meanFatVariation = float(fatVariationSum) / float(totalStudents)
+        averageFatVariation = float(fatVariationSum) / float(totalStudents)
 
-        return meanFatVariation
+        return averageFatVariation
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
     except pd.errors.EmptyDataError:
@@ -216,15 +217,15 @@ def meanFatVariation():
         raise HTTPException(status_code=500, detail="Error processing data file.")
     return
 
-def meanLoadVariation():
+def getAverageStudentLoadVariation():
     try:
         df = pd.read_csv("database.csv")
         loadVariationSum = df["VariacaoCarga_2m"].sum()
         totalStudents = getTotalOfStudents()
 
-        meanLoadVariation = float(loadVariationSum) / float(totalStudents)
+        averageLoadVariation = float(loadVariationSum) / float(totalStudents)
 
-        return meanLoadVariation
+        return averageLoadVariation
     except FileNotFoundError:
         raise HTTPException(status_code=500, detail="Data file not found on the server.")
     except pd.errors.EmptyDataError:
